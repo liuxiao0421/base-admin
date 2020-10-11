@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--解决idea thymeleaf 表达式模板报红波浪线-->
+<!--suppress ALL -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 引入公用部分 -->
+    <script th:replace="common/head::static"></script>
+    <!-- 样式 -->
+    <link th:href="@{/bill/css/bill.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div class="layui-row layui-col-space15">
+    <!-- 树 -->
+    <div class="layui-col-md8">
+        <div class="layui-card">
+            <div class="layui-card-header">账单列表</div>
+            <div class="layui-card-body">
+                <!-- 表格主体 -->
+                <table class="layui-hide" id="billRecordsTable" lay-filter="test"></table>
+                <!-- 模板 -->
+                <script type="text/html" id="billRecordsTableToolbar">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>
+                        <input type="text" id="payer" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">
+                        <button class="layui-btn layui-btn-sm" lay-event="query">查询<i class="layui-icon layui-icon-search"></i></button>
+                    </div>
+                </script>
+                <script type="text/html" id="billRecordsTableBar">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑<i class="layui-icon layui-icon-edit"></i></a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除<i class="layui-icon layui-icon-close"></i></a>
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- 操作表单 -->
+    <div class="layui-col-md4">
+        <div class="layui-card">
+            <div class="layui-card-header">操作表单</div>
+            <div class="layui-card-body">
+                <form id="billForm" class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">账单时间*</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="gmtCreate" id="gmtCreate" autocomplete="off" placeholder="请选择项目时间"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">客户名称*</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="payer" autocomplete="off" placeholder="请输入客户名称"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">应收金额*</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="receivableAmt" autocomplete="off" placeholder="请输入应收金额"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">实收金额</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="netReceiptsAmt" autocomplete="off" placeholder="请输入实收金额"
+                                   class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">是否结清*</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="isEnd" value="1" title="是">
+                            <input type="radio" name="isEnd" value="0" title="否" checked lay-filter="ChoiceRadio">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">项目性质*</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="projectNature" autocomplete="off" placeholder="请输入项目性质（广告，专题等）"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">项目描述*</label>
+                        <div class="layui-input-block">
+                            <textarea placeholder="请输入账单描述" name="billDesc" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <!-- 隐藏域 -->
+                    <input type="text" name="userId" th:value="001" hidden="hidden"/>
+                </form>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <a class="layui-btn" onclick="billFormSave()">保存</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<!-- js -->
+<!--<script th:src="@{/sys/user/js/user.js}"></script>-->
+<script th:src="@{/bill/js/bill.js}"></script>
+</html>
