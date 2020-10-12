@@ -15,19 +15,7 @@ body {
     padding-right: 0;
 }
 
-#payer {
-    display: unset;
-    width: 100px;
-    margin-left: 10px;
-}
-
-#create {
-    display: unset;
-    width: 100px;
-    margin-left: 5px;
-}
-
-#endResult {
+#payer,#create,#endResult {
     display: unset;
     width: 100px;
     margin-left: 5px;

@@ -1,5 +1,4 @@
 let tableIns;
-let tableInsOnLine;
 let tree;
 layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], function () {
     let table = layui.table;
@@ -44,8 +43,8 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
             // , {field: 'billDesc', title: '账单描述', hide: true}
             , {field: 'gmtCreate', title: '创建时间'}
             , {field: 'gmtModify', title: '修改时间'}
-            , {field: 'receivableAmt', title: '应收金额'}
-            , {field: 'netReceiptsAmt', title: '实收金额'}
+            , {field: 'receivableAmt', title: '应收(元)'}
+            , {field: 'netReceiptsAmt', title: '实收(元)'}
             , {field: 'isEnd', title: '是否结清',templet:"#stateBar"}
             , {fixed: 'right', title: '操作',minWidth: 140, toolbar: '#billRecordsTableBar'}
         ]]
@@ -65,7 +64,8 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
                 layer.msg("请填写右边的表单并保存！");
                 break;
             case 'query':
-                let payer = $("#payer").val();
+                let payer = $("#payer").val()==""?null:$("#payer").val();
+                let gmtCreate = $('#create').val()==""?null:$('#create').val();
                 let query = {
                     page: {
                         curr: 1 //重新从第 1 页开始
@@ -75,16 +75,32 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
                         // this.where = {};
                     }
                 };
-                if (!payer) {
-                    payer = "";
-                }
                 //设定异步数据接口的额外参数
-                query.where = {payer: payer};
+                query.where = {payer: payer,gmtCreate: gmtCreate};
                 tableIns.reload(query);
+                laydate.render({
+                    elem: '#create',
+                    format: "yyyyMMdd"
+                });
                 $("#payer").val(payer);
+                $('#create').val(gmtCreate);
                 break;
             case 'reload':
-                tableInsOnLine.reload();
+                let queryReload = {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , done: function (res, curr, count) {
+                        //完成后重置where，解决下一次请求携带旧数据
+                        this.where = {};
+                    }
+                };
+                //设定异步数据接口的额外参数
+                tableIns.reload(queryReload);
+                laydate.render({
+                    elem: '#create',
+                    format: "yyyyMMdd"
+                });
                 break;
         }
     });
@@ -109,16 +125,6 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
             $("input[name=isEnd][value='0']").prop("checked", data.isEnd == '0' ? 'checked' : false);
             $("input[name=isEnd][value='1']").prop("checked", data.isEnd == '1' ? true : false);
             form.render();
-        }
-        //踢下线
-        else if (obj.event === 'forced') {
-            layer.confirm('确认强制该用户下线吗？', function (index) {
-                //向服务端发送删除指令
-                $.delete(ctx + "/sys/sysUser/forced/" + data.loginName, {}, function (data) {
-                    tableInsOnLine.reload();
-                    layer.close(index);
-                })
-            });
         }
     });
 

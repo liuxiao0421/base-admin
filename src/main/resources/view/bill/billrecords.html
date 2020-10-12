@@ -20,45 +20,16 @@
                 <!-- 模板 -->
                 <script type="text/html" id="billRecordsTableToolbar">
                     <div class="layui-btn-container">
-                        <form class="layui-form" action="">
-                            <div class="layui-form-item">
-                                <div class="layui-inline">
-                                    <div class="layui-input-inline">
-                                        <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>
-                                    </div>
-                                </div>
-                                <div class="layui-inline" id="payer">
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">
-                                    </div>
-                                </div>
-                                <div class="layui-inline" id="create">
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="gmtCreate" autocomplete="off" placeholder="输入账单时间" class="layui-input layui-btn-sm">
-                                    </div>
-                                </div>
-                                <div class="layui-inline" id="endResult">
-                                    <div class="layui-input-inline">
-                                        <select name="isEnd">
-                                            <option value="1" selected="">是</option>
-                                            <option value="0">否</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-<!--                        <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>-->
-<!--                        <input type="text" id="payer" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">-->
-<!--                        <input type="text" id="create" name="gmtCreate" autocomplete="off" placeholder="输入账单时间" class="layui-input layui-btn-sm">-->
-<!--                        <select id="endResult">-->
-<!--                            <option value="0">否</option>-->
-<!--                            <option value="1">是</option>-->
-<!--                        </select>-->
-<!--                        <div class="layui-form-item">-->
-<!--                            -->
-<!--                        </div>-->
-<!--                        <button class="layui-btn layui-btn-sm" lay-event="query">查询<i class="layui-icon layui-icon-search"></i></button>-->
+                        <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>
+                        <input type="text" id="payer" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">
+                        <input type="text" id="create" name="gmtCreate" autocomplete="off" placeholder="选择账单时间" class="layui-input layui-btn-sm">
+                        <!--<select name="isEnd" id="endResult" class="">-->
+                            <!--<option value="">选择是否结清</option>-->
+                            <!--<option value="0">未结清</option>-->
+                            <!--<option value="1">已结清</option>-->
+                        <!--</select>-->
+                        <button class="layui-btn layui-btn-sm" lay-event="query">查询<i class="layui-icon layui-icon-search"></i></button>
+                        <button class="layui-btn layui-btn-sm" lay-event="reload">刷新<i class="layui-icon layui-icon-refresh"></i></button>
                     </div>
                 </script>
                 <script type="text/html" id="billRecordsTableBar">
