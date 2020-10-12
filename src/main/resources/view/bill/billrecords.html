@@ -16,13 +16,49 @@
             <div class="layui-card-header">账单列表</div>
             <div class="layui-card-body">
                 <!-- 表格主体 -->
-                <table class="layui-hide" id="billRecordsTable" lay-filter="test"></table>
+                <table class="layui-hide" id="billRecordsTable" lay-filter="billTable"></table>
                 <!-- 模板 -->
                 <script type="text/html" id="billRecordsTableToolbar">
                     <div class="layui-btn-container">
-                        <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>
-                        <input type="text" id="payer" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">
-                        <button class="layui-btn layui-btn-sm" lay-event="query">查询<i class="layui-icon layui-icon-search"></i></button>
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <div class="layui-input-inline">
+                                        <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>
+                                    </div>
+                                </div>
+                                <div class="layui-inline" id="payer">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">
+                                    </div>
+                                </div>
+                                <div class="layui-inline" id="create">
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="gmtCreate" autocomplete="off" placeholder="输入账单时间" class="layui-input layui-btn-sm">
+                                    </div>
+                                </div>
+                                <div class="layui-inline" id="endResult">
+                                    <div class="layui-input-inline">
+                                        <select name="isEnd">
+                                            <option value="1" selected="">是</option>
+                                            <option value="0">否</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+<!--                        <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>-->
+<!--                        <input type="text" id="payer" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">-->
+<!--                        <input type="text" id="create" name="gmtCreate" autocomplete="off" placeholder="输入账单时间" class="layui-input layui-btn-sm">-->
+<!--                        <select id="endResult">-->
+<!--                            <option value="0">否</option>-->
+<!--                            <option value="1">是</option>-->
+<!--                        </select>-->
+<!--                        <div class="layui-form-item">-->
+<!--                            -->
+<!--                        </div>-->
+<!--                        <button class="layui-btn layui-btn-sm" lay-event="query">查询<i class="layui-icon layui-icon-search"></i></button>-->
                     </div>
                 </script>
                 <script type="text/html" id="billRecordsTableBar">
@@ -38,6 +74,7 @@
             <div class="layui-card-header">操作表单</div>
             <div class="layui-card-body">
                 <form id="billForm" class="layui-form layui-form-pane">
+                    <input type="hidden" name="id"/>
                     <div class="layui-form-item">
                         <label class="layui-form-label">账单时间*</label>
                         <div class="layui-input-block">
@@ -103,4 +140,13 @@
 <!-- js -->
 <!--<script th:src="@{/sys/user/js/user.js}"></script>-->
 <script th:src="@{/bill/js/bill.js}"></script>
+<script type="text/html" id="stateBar">
+    {{# if (d.isEnd==0) { }}
+    <span style="color: red">未结清</span>
+    {{# } else if(d.isEnd==1) { }}
+    <span style="color: green">已结清</span>
+    {{# } else{ }}
+    <span style="color: gray">未知</span>
+    {{# }}}
+</script>
 </html>

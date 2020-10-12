@@ -46,7 +46,7 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
             , {field: 'gmtModify', title: '修改时间'}
             , {field: 'receivableAmt', title: '应收金额'}
             , {field: 'netReceiptsAmt', title: '实收金额'}
-            , {field: 'isEnd', title: '是否结清'}
+            , {field: 'isEnd', title: '是否结清',templet:"#stateBar"}
             , {fixed: 'right', title: '操作',minWidth: 140, toolbar: '#billRecordsTableBar'}
         ]]
         , defaultToolbar: ['', '', '']
@@ -56,18 +56,12 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
     });
 
     //头工具栏事件
-    table.on('toolbar(test)', function (obj) {
+    table.on('toolbar(billTable)', function (obj) {
         switch (obj.event) {
             case 'addData':
                 //重置操作表单
-                $("#userForm")[0].reset();
-                let nowTime = commonUtil.getNowTime();
-                $("input[name='createTime']").val(nowTime);
-                $("input[name='updateTime']").val(nowTime);
-                $("input[name='lastChangePwdTime']").val(nowTime);
+                $("#billForm")[0].reset();
                 form.render();
-                loadMenuTree();
-                loadAuthorityTree();
                 layer.msg("请填写右边的表单并保存！");
                 break;
             case 'query':
@@ -96,13 +90,13 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
     });
 
     //监听行工具事件
-    table.on('tool(test)', function (obj) {
+    table.on('tool(billTable)', function (obj) {
         let data = obj.data;
         //删除
         if (obj.event === 'del') {
             layer.confirm('确认删除吗？', function (index) {
                 //向服务端发送删除指令
-                $.delete(ctx + "/bill/delete/" + data.userId, {}, function (data) {
+                $.delete(ctx + "/bill/delete/" + data.id, {}, function (data) {
                     tableIns.reload();
                     layer.close(index);
                 })
@@ -111,10 +105,10 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
         //编辑
         else if (obj.event === 'edit') {
             //回显操作表单
-            $("#userForm").form(data);
+            $("#billForm").form(data);
+            $("input[name=isEnd][value='0']").prop("checked", data.isEnd == '0' ? 'checked' : false);
+            $("input[name=isEnd][value='1']").prop("checked", data.isEnd == '1' ? true : false);
             form.render();
-            loadMenuTree();
-            loadAuthorityTree();
         }
         //踢下线
         else if (obj.event === 'forced') {
@@ -131,6 +125,10 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
     //日期选择器
     laydate.render({
         elem: '#gmtCreate',
+        format: "yyyyMMdd"
+    });
+    laydate.render({
+        elem: '#create',
         format: "yyyyMMdd"
     });
 });
@@ -150,91 +148,3 @@ function billFormSave() {
     });
 }
 
-/**
- * 重置密码
- */
-function resetPassword() {
-    let userForm = $("#userForm").serializeObject();
-    if (userForm.userId === "") {
-        layer.msg("新增用户无需点这个按钮，如需重置请先选择需要重置的用户！", {icon: 2, time: 2000}, function () {
-        });
-        return;
-    }
-
-    layer.confirm('确认重置该用户的密码吗？', function (index) {
-        $.post(ctx + "/sys/sysUser/resetPassword", userForm, function (data) {
-            if (data.flag) {
-                layer.msg("密码重置成功，请尽快通知用户登录系统修改密码！", {icon: 1, time: 2000}, function () {});
-            }
-            layer.close(index);
-        });
-    });
-}
-
-/**
- * 加载用户菜单
- */
-function loadMenuTree() {
-    let userForm = $("#userForm").serializeObject();
-    //获取菜单数据
-    $.post(ctx + "/sys/sysUserMenu/findUserMenuAndAllSysMenuByUserId", userForm, function (data) {
-        //数据说明：id对应id，title对应menuName，href对应menuPath
-        let treeData = commonUtil.updateKeyForLayuiTree(data.data.sysMenuVoList);
-
-        //回显用户菜单
-        treeData = commonUtil.checkedForLayuiTree(treeData, JSON.stringify(data.data.userSysMenuVoList));
-
-        //开启节点操作图标
-        tree.render({
-            elem: '#userMenuTree'
-            , id: 'userMenuTree'
-            , data: [{
-                title: '系统菜单根节点'
-                , href: "/"
-                , id: 0
-                , spread: true
-                , children: treeData
-            }]
-            , showCheckbox: true
-        });
-    });
-}
-
-/**
- * 加载用户权限
- */
-function loadAuthorityTree() {
-    let userForm = $("#userForm").serializeObject();
-    //获取菜单数据
-    $.post(ctx + "/sys/sysUserAuthority/findUserAuthorityAndAllSysAuthorityByUserId", userForm, function (data) {
-        //数据说明：id对应id，title对应menuName，href对应menuPath
-        let treeData = [];
-        let userTreeString = JSON.stringify(data.data.sysUserAuthorityVoList);
-        for (let authority of data.data.sysAuthorityVoList) {
-            let tree = {
-                title: authority.authorityName
-                , id: authority.authorityId
-                , spread: true
-            };
-            //回显用户权限
-            if(userTreeString.search(authority.authorityId) !== -1){
-                tree.checked = true;
-            }
-            treeData.push(tree);
-        }
-
-        //开启节点操作图标
-        tree.render({
-            elem: '#userAuthorityTree'
-            , id: 'userAuthorityTree'
-            , data: [{
-                title: '系统权限根节点'
-                , href: "/"
-                , id: 0
-                , spread: true
-                , children: treeData
-            }]
-            , showCheckbox: true
-        });
-    });
-}

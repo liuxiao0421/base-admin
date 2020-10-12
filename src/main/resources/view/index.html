@@ -68,7 +68,7 @@
     <!-- 内容主体区域 -->
     <div class="layui-body" style="overflow-y: hidden;">
         <!--   动态选项卡   -->
-        <div class="layui-tab" lay-filter="demo" lay-allowclose="true">
+        <div class="layui-tab" lay-filter="index" lay-allowclose="true">
             <!-- 标题 -->
             <ul class="layui-tab-title">
                 <li class="layui-this" lay-id="11">首页</li>
@@ -135,14 +135,14 @@
             //如果不存在
             if ($(".layui-tab-title").find("li[lay-id='" + id + "']").length <= 0) {
                 let height = document.documentElement.clientHeight - 160 + "px";
-                element.tabAdd('demo', {
+                element.tabAdd('index', {
                     title: text,
                     //iframe子页面onload新增监听src为/loginPage是父页面跳转/loginPage，解决“俄罗斯套娃”问题
-                    content: "<iframe onload='if(this.contentWindow.location.pathname == \""+ctx+"/loginPage\"){window.location.href = \""+ctx+"\"/loginPage\"} $(this)[0].height = document.documentElement.clientHeight-160' width='100%' height='" + height + "' frameborder='0' scrolling='auto' src=\"" + url + "\"></iframe>",
+                    content: "<iframe onload='if(this.contentWindow.location.pathname == \""+ctx+"/loginPage\"){window.location.href = \""+ctx+"/loginPage\"} $(this)[0].height = document.documentElement.clientHeight-160' width='100%' height='" + height + "' frameborder='0' scrolling='auto' src=\"" + url + "\"></iframe>",
                     id: id
                 });
             }
-            element.tabChange('demo', id);
+            element.tabChange('index', id);
         });
     });
 </script>
