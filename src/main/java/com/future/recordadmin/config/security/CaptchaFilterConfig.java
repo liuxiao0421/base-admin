@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,13 +29,10 @@ import java.util.HashMap;
 @Component
 @Slf4j
 public class CaptchaFilterConfig implements Filter {
-
     @Value("${captcha.enable}")
     private Boolean captchaEnable;
-
     @Value("${server.servlet.context-path:}")
     private String contextPath;
-
     @Autowired
     private SessionRegistry sessionRegistry;
 
@@ -49,7 +45,6 @@ public class CaptchaFilterConfig implements Filter {
             注：详情可在SessionManagementFilter中进行断点调试查看
             security框架会在session的attribute存储登录信息，先从session.getAttribute(this.springSecurityContextKey)中获取登录用户信息
             ，如果没有，再从本地上下文SecurityContextHolder.getContext().getAuthentication()获取，因此想要强制用户下线得进行如下操作
-
             另外，虽然重启了服务，sessionRegistry.getAllSessions()为空，但之前的用户session未过期同样能访问系统，也是这个原因
          */
         SessionInformation sessionInformation = sessionRegistry.getSessionInformation(session.getId());
@@ -58,12 +53,10 @@ public class CaptchaFilterConfig implements Filter {
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().print("<script type='text/javascript'>window.location.href = '" + contextPath + "/logout'</script>");
         }
-
         //只拦截登录请求，且开发环境下不拦截
         if ("POST".equals(request.getMethod()) && "/login".equals(request.getRequestURI().replaceFirst(contextPath,""))) {
             //前端公钥
             String publicKey = null;
-
             //jackson
             ObjectMapper mapper = new ObjectMapper();
             //jackson 序列化和反序列化 date处理
@@ -111,33 +104,29 @@ public class CaptchaFilterConfig implements Filter {
                     log.error(ErrorUtil.errorInfoToString(e));
                 }
             }
-
             //从session中获取生成的验证码
             String verifyCode = session.getAttribute("verifyCode").toString();
-
             if (captchaEnable && !verifyCode.toLowerCase().equals(request.getParameter("captcha").toLowerCase())) {
                 String dataString = "{\"code\":\"400\",\"msg\":\"验证码错误\"}";
-
                 //判断api加密开关是否开启
                 if("Y".equals(SysSettingUtil.getSysSetting().getSysApiEncrypt())){
                     //加密
                     try {
-                    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    //每次响应之前随机获取AES的key，加密data数据
-                    String key = AesUtil.getKey();
-                    log.info("AES的key：" + key);
-                    log.info("需要加密的data数据：" + dataString);
-                    String data = AesUtil.encrypt(dataString, key);
+                        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                        //每次响应之前随机获取AES的key，加密data数据
+                        String key = AesUtil.getKey();
+                        log.info("AES的key：" + key);
+                        log.info("需要加密的data数据：" + dataString);
+                        String data = AesUtil.encrypt(dataString, key);
 
-                    //用前端的公钥来解密AES的key，并转成Base64
-                    String aesKey = Base64.encodeBase64String(RsaUtil.encryptByPublicKey(key.getBytes(), publicKey));
-                    dataString = "{\"data\":{\"data\":\"" + data + "\",\"aesKey\":\"" + aesKey + "\"}}";
-                } catch (Throwable e) {
+                        //用前端的公钥来解密AES的key，并转成Base64
+                        String aesKey = Base64.encodeBase64String(RsaUtil.encryptByPublicKey(key.getBytes(), publicKey));
+                        dataString = "{\"data\":{\"data\":\"" + data + "\",\"aesKey\":\"" + aesKey + "\"}}";
+                    } catch (Throwable e) {
                         //输出到日志文件中
                         log.error(ErrorUtil.errorInfoToString(e));
                     }
                 }
-
                 //转json字符串并转成Object对象，设置到Result中并赋值给返回值o
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("application/json; charset=utf-8");
@@ -148,7 +137,6 @@ public class CaptchaFilterConfig implements Filter {
                 return;
             }
         }
-
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

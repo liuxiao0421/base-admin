@@ -15,8 +15,16 @@ body {
     padding-right: 0;
 }
 
-#payer,#create,#endResult {
+#payer,#create,#settleTime,#endResult {
     display: unset;
     width: 100px;
     margin-left: 5px;
 }
+#endResult {
+    display: unset;
+    width: 100px;
+    margin-left: 5px;
+    padding-left: 10px;
+    color: #7d7d7d;
+}
+

@@ -26,4 +26,6 @@ public class BillRecordVo extends PageCondition implements Serializable {
     private String payer;
     /**项目性质*/
     private String projectNature;
+    /**结算时间*/
+    private String settlementTime;
 }

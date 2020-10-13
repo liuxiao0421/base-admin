@@ -34,9 +34,7 @@ public class LoginFailureHandlerConfig implements AuthenticationFailureHandler {
             try {
                 //前端公钥
                 String publicKey = httpServletRequest.getParameter("publicKey");
-
                 log.info("前端公钥：" + publicKey);
-
                 //jackson
                 ObjectMapper mapper = new ObjectMapper();
                 //jackson 序列化和反序列化 date处理

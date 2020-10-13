@@ -107,15 +107,12 @@ class IndexController {
     @GetMapping("loginPage")
     public ModelAndView login(){
         ModelAndView modelAndView = new ModelAndView("login");
-
         //系统信息
         modelAndView.addObject("sys", SysSettingUtil.getSysSetting());
-
         //后端公钥
         String publicKey = RsaUtil.getPublicKey();
         log.info("后端公钥：" + publicKey);
         modelAndView.addObject("publicKey", publicKey);
-
         return modelAndView;
     }
 

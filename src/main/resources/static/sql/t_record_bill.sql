@@ -32,6 +32,7 @@ CREATE TABLE `t_record_bill` (
   `bill_desc` varchar(255) NOT NULL COMMENT '账单说明',
   `payer` varchar(128) NOT NULL COMMENT '付款人',
   `project_nature` varchar(128) NOT NULL COMMENT '项目性质（广告，专题等）',
+  `settlement_time` varchar(64) NOT NULL COMMENT '结算时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -9,9 +9,9 @@
     <link th:href="@{/bill/css/bill.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="layui-row layui-col-space15">
+<div class="layui-row layui-col-space12">
     <!-- 树 -->
-    <div class="layui-col-md8">
+    <div class="layui-col-md8 layui-col-lg8">
         <div class="layui-card">
             <div class="layui-card-header">账单列表</div>
             <div class="layui-card-body">
@@ -23,11 +23,12 @@
                         <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>
                         <input type="text" id="payer" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">
                         <input type="text" id="create" name="gmtCreate" autocomplete="off" placeholder="选择账单时间" class="layui-input layui-btn-sm">
-                        <!--<select name="isEnd" id="endResult" class="">-->
-                            <!--<option value="">选择是否结清</option>-->
-                            <!--<option value="0">未结清</option>-->
-                            <!--<option value="1">已结清</option>-->
-                        <!--</select>-->
+                        <input type="text" id="settleTime" name="settlementTime" autocomplete="off" placeholder="选择结算时间" class="layui-input layui-btn-sm">
+                        <select lay-ignore name="isEnd" id="endResult" class="layui-input layui-btn-sm">
+                            <option value="">选择是否结清</option>
+                            <option value="0">未结清</option>
+                            <option value="1">已结清</option>
+                        </select>
                         <button class="layui-btn layui-btn-sm" lay-event="query">查询<i class="layui-icon layui-icon-search"></i></button>
                         <button class="layui-btn layui-btn-sm" lay-event="reload">刷新<i class="layui-icon layui-icon-refresh"></i></button>
                     </div>
@@ -50,6 +51,13 @@
                         <label class="layui-form-label">账单时间*</label>
                         <div class="layui-input-block">
                             <input type="text" name="gmtCreate" id="gmtCreate" autocomplete="off" placeholder="请选择项目时间"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">结算时间*</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="settlementTime" id="settlementTime" autocomplete="off" placeholder="请选择结算时间"
                                    class="layui-input">
                         </div>
                     </div>
@@ -92,7 +100,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">项目描述*</label>
                         <div class="layui-input-block">
-                            <textarea placeholder="请输入账单描述" name="billDesc" class="layui-textarea"></textarea>
+                            <textarea placeholder="请输入账单描述" name="billDesc" class="layui-textarea" style="min-height: auto"></textarea>
                         </div>
                     </div>
                     <!-- 隐藏域 -->

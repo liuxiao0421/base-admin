@@ -1,10 +1,14 @@
 package com.future.recordadmin.bill.controller;
 
+import com.future.recordadmin.annotation.Decrypt;
+import com.future.recordadmin.annotation.Encrypt;
 import com.future.recordadmin.bill.pojo.BillRecord;
 import com.future.recordadmin.bill.service.BillService;
 import com.future.recordadmin.bill.vo.BillRecordVo;
 import com.future.recordadmin.common.controller.CommonController;
 import com.future.recordadmin.common.pojo.Result;
+import com.future.recordadmin.config.interceptor.LoginHandlerInterceptor;
+import com.future.recordadmin.sys.sysuser.pojo.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +39,11 @@ public class BillController extends CommonController<BillRecordVo, BillRecord, S
     }
 
     @PostMapping("addBill")
-    public Result addBill(@RequestBody BillRecordVo billRecord){
+    @Decrypt
+    @Encrypt
+    public Result addBill(BillRecordVo billRecord){
+        SysUser sysUser = LoginHandlerInterceptor.getSysUser();
+        billRecord.setUserId(sysUser.getUserId());
         return this.billService.save(billRecord);
     }
 

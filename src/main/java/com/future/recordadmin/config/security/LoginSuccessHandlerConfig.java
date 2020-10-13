@@ -1,5 +1,8 @@
 package com.future.recordadmin.config.security;
 
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONUtil;
+import com.future.recordadmin.common.constants.CommonConstants;
 import com.future.recordadmin.sys.sysuser.service.SysUserService;
 import com.future.recordadmin.sys.sysuser.vo.SysUserVo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -39,10 +42,8 @@ import java.util.List;
 public class LoginSuccessHandlerConfig implements AuthenticationSuccessHandler {
     @Autowired
     private SessionRegistry sessionRegistry;
-
     @Autowired
     private SysUserService sysUserService;
-
     @Autowired
     private DataSource dataSource;
 
@@ -93,13 +94,14 @@ public class LoginSuccessHandlerConfig implements AuthenticationSuccessHandler {
         if(flag){
             //清除当前的上下文
             SecurityContextHolder.clearContext();
-
             //清除remember-me持久化tokens
             persistentTokenRepository1().removeUserTokens(user.getUsername());
-        }
-        else{
+        }else{
             //校验通过，注册session
             sessionRegistry.registerNewSession(httpServletRequest.getSession().getId(),user);
+
+            //设置用户信息存放在session中
+            httpServletRequest.getSession().setAttribute(CommonConstants.USER_SESSION_ID, JSONUtil.toJsonStr(sysUserVo));
         }
 
         //判断api加密开关是否开启
@@ -108,9 +110,7 @@ public class LoginSuccessHandlerConfig implements AuthenticationSuccessHandler {
             try {
                 //前端公钥
                 String publicKey = httpServletRequest.getParameter("publicKey");
-
                 log.info("前端公钥：" + publicKey);
-
                 //jackson
                 ObjectMapper mapper = new ObjectMapper();
                 //jackson 序列化和反序列化 date处理
@@ -124,7 +124,6 @@ public class LoginSuccessHandlerConfig implements AuthenticationSuccessHandler {
 
                 //用前端的公钥来解密AES的key，并转成Base64
                 String aesKey = Base64.encodeBase64String(RsaUtil.encryptByPublicKey(key.getBytes(), publicKey));
-
                 msg = "{\"data\":{\"data\":\"" + data + "\",\"aesKey\":\"" + aesKey + "\"}}";
             } catch (Throwable e) {
                 //输出到日志文件中

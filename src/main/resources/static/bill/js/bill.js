@@ -41,8 +41,8 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
             {field: 'id', title: 'ID', hide: true}
             , {field: 'payer', title: '客户名称'}
             // , {field: 'billDesc', title: '账单描述', hide: true}
-            , {field: 'gmtCreate', title: '创建时间'}
-            , {field: 'gmtModify', title: '修改时间'}
+            , {field: 'gmtCreate', title: '账单时间'}
+            , {field: 'settlementTime', title: '结算时间'}
             , {field: 'receivableAmt', title: '应收(元)'}
             , {field: 'netReceiptsAmt', title: '实收(元)'}
             , {field: 'isEnd', title: '是否结清',templet:"#stateBar"}
@@ -66,6 +66,8 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
             case 'query':
                 let payer = $("#payer").val()==""?null:$("#payer").val();
                 let gmtCreate = $('#create').val()==""?null:$('#create').val();
+                let settlementTime = $('#settleTime').val()==""?null:$('#settleTime').val();
+                let isEnd = $('#endResult').val()==""?null:$('#endResult').val();
                 let query = {
                     page: {
                         curr: 1 //重新从第 1 页开始
@@ -76,14 +78,20 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
                     }
                 };
                 //设定异步数据接口的额外参数
-                query.where = {payer: payer,gmtCreate: gmtCreate};
+                query.where = {payer: payer,gmtCreate: gmtCreate,settlementTime: settlementTime,isEnd: isEnd};
                 tableIns.reload(query);
                 laydate.render({
                     elem: '#create',
                     format: "yyyyMMdd"
                 });
+                laydate.render({
+                    elem: '#settleTime',
+                    format: "yyyyMMdd"
+                });
                 $("#payer").val(payer);
                 $('#create').val(gmtCreate);
+                $('#settleTime').val(settlementTime);
+                $('#endResult').val(isEnd);
                 break;
             case 'reload':
                 let queryReload = {
@@ -99,6 +107,10 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
                 tableIns.reload(queryReload);
                 laydate.render({
                     elem: '#create',
+                    format: "yyyyMMdd"
+                });
+                laydate.render({
+                    elem: '#settleTime',
                     format: "yyyyMMdd"
                 });
                 break;
@@ -137,6 +149,14 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
         elem: '#create',
         format: "yyyyMMdd"
     });
+    laydate.render({
+        elem: '#settlementTime',
+        format: "yyyyMMdd"
+    });
+    laydate.render({
+        elem: '#settleTime',
+        format: "yyyyMMdd"
+    });
 });
 
 /**
@@ -144,7 +164,8 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
  */
 function billFormSave() {
     let billForm = $("#billForm").serializeObject();
-    $.post(ctx + "/bill/save", billForm, function (data) {
+    $.post(ctx + "/bill/addBill", billForm, function (data) {
+        console.log("data:"+data)
         if(!data.flag){
             layer.msg(data.msg, {icon: 2,time: 2000}, function () {});
             return;
@@ -152,5 +173,6 @@ function billFormSave() {
         layer.msg("保存成功", {icon: 1, time: 2000}, function () {});
         tableIns.reload();
     });
+    $("#billForm")[0].reset();
 }
 
