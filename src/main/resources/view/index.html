@@ -51,7 +51,7 @@
             <ul class="layui-nav layui-nav-tree" lay-filter="test"  th:style="${' background-color:' + sys.sysColor + ' !important;'}">
                 <!-- 动态读取加载系统菜单 -->
                 <div th:each="menu,iterStat : ${menuList}">
-                    <li class="layui-nav-item" th:unless="${#lists.size(menu.children)} eq 0">
+                    <li class="layui-nav-item layui-nav-itemed" th:unless="${#lists.size(menu.children)} eq 0">
                         <a th:text="${menu.menuName}" href="javascript:;">XXX</a>
                         <dl class="layui-nav-child" th:each="childMenu,iterStat : ${menu.children}">
                             <dd><a class="huanzi-menu" th:data-url="${#request.getContextPath() + childMenu.menuPath}" th:data-id="${childMenu.menuId}" th:text="${childMenu.menuName}" href="javascript:;">XXX</a></dd>
@@ -77,14 +77,153 @@
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
                     <div class="layui-row layui-col-space15" style="padding: 20px;background-color: #F2F2F2;">
-                        <div class="layui-col-md6">
+                        <div class="layui-col-md15">
                             <div class="layui-card">
                                 <div class="layui-card-header">欢迎使用</div>
                                 <div class="layui-card-body">
                                     欢迎你，<span style="font-size: 20px;color: #009E94" th:text="${loginUser.userName}"></span>
                                     <br/>
-                                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-                                        <legend>今日待结算统计</legend>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md8">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md6">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">未结算账单统计</div>
+                                        <div class="layui-card-body">
+                                            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                                                <legend style="color: #ff0000">今日待结算统计</legend>
+                                            </fieldset>
+
+                                            <table class="layui-table" lay-skin="line">
+                                                <colgroup>
+                                                    <col width="150">
+                                                    <col width="150">
+                                                    <col width="150">
+                                                    <col>
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>共计(笔)</th>
+                                                    <th>总计(元)</th>
+                                                    <th>人数(人)</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>贤心</td>
+                                                    <td>汉族</td>
+                                                    <td>1989-10-14</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                                                <legend style="color: #ff0000">近七日待结算统计</legend>
+                                            </fieldset>
+
+                                            <table class="layui-table" lay-skin="line">
+                                                <colgroup>
+                                                    <col width="150">
+                                                    <col width="150">
+                                                    <col width="150">
+                                                    <col>
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>共计(笔)</th>
+                                                    <th>总计(元)</th>
+                                                    <th>人数(人)</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>贤心</td>
+                                                    <td>汉族</td>
+                                                    <td>1989-10-14</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">已结算账单统计</div>
+                                        <div class="layui-card-body">
+                                            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                                                <legend style="color: #ff0000">今日已结算统计</legend>
+                                            </fieldset>
+
+                                            <table class="layui-table" lay-skin="line">
+                                                <colgroup>
+                                                    <col width="150">
+                                                    <col width="150">
+                                                    <col width="150">
+                                                    <col>
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>共计(笔)</th>
+                                                    <th>总计(元)</th>
+                                                    <th>人数(人)</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>贤心</td>
+                                                    <td>汉族</td>
+                                                    <td>1989-10-14</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                                                <legend style="color: #ff0000">近七日已结算统计</legend>
+                                            </fieldset>
+
+                                            <table class="layui-table" lay-skin="line">
+                                                <colgroup>
+                                                    <col width="150">
+                                                    <col width="150">
+                                                    <col width="150">
+                                                    <col>
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>共计(笔)</th>
+                                                    <th>总计(元)</th>
+                                                    <th>人数(人)</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>贤心</td>
+                                                    <td>汉族</td>
+                                                    <td>1989-10-14</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="layui-col-md12">数据</div>-->
+                            </div>
+                        </div>
+
+                        <div class="layui-col-md4">
+                            <!--<div class="layui-card">-->
+                                <!--<div class="layui-card-header">系统公告</div>-->
+                                <!--<div class="layui-card-body">-->
+                                    <!--<div th:utext="${sys.sysNoticeText}"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="layui-card">
+                                <div class="layui-card-header">历史账单统计信息</div>
+                                <div class="layui-card-body">
+                                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+                                        <legend style="color: #ff0000">历史待结算统计</legend>
                                     </fieldset>
 
                                     <table class="layui-table" lay-skin="line">
@@ -107,26 +246,35 @@
                                             <td>汉族</td>
                                             <td>1989-10-14</td>
                                         </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                                        <legend style="color: #ff0000">历史已结算统计</legend>
+                                    </fieldset>
+
+                                    <table class="layui-table" lay-skin="line">
+                                        <colgroup>
+                                            <col width="150">
+                                            <col width="150">
+                                            <col width="150">
+                                            <col>
+                                        </colgroup>
+                                        <thead>
                                         <tr>
-                                            <td>张爱玲</td>
-                                            <td>汉族</td>
-                                            <td>1920-09-30</td>
+                                            <th>共计(笔)</th>
+                                            <th>总计(元)</th>
+                                            <th>人数(人)</th>
                                         </tr>
+                                        </thead>
+                                        <tbody>
                                         <tr>
-                                            <td>Helen Keller</td>
-                                            <td>拉丁美裔</td>
-                                            <td>1880-06-27</td>
+                                            <td>贤心</td>
+                                            <td>汉族</td>
+                                            <td>1989-10-14</td>
                                         </tr>
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="layui-col-md6">
-                            <div class="layui-card">
-                                <div class="layui-card-header">系统公告</div>
-                                <div class="layui-card-body">
-                                    <div th:utext="${sys.sysNoticeText}"></div>
                                 </div>
                             </div>
                         </div>
