@@ -53,6 +53,13 @@ public class BillController extends CommonController<BillRecordVo, BillRecord, S
         return this.billService.delete(billRecord.getId());
     }
 
+    @PostMapping("historyBillStatistics")
+    @Decrypt
+    @Encrypt
+    public Result historyBillStatistics(BillRecordVo billRecordVo){
+        billRecordVo.setUserId(LoginHandlerInterceptor.getSysUser().getUserId());
+        return this.billService.billStatistics(billRecordVo);
+    }
 
 
 }

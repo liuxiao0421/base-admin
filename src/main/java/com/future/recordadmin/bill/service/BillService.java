@@ -10,4 +10,8 @@ import com.future.recordadmin.sys.sysmenu.vo.SysMenuVo;
 import java.util.List;
 
 public interface BillService extends CommonService<BillRecordVo, BillRecord, String> {
+    /**根据条件统计账单*/
+    Result conditionBillRecords(BillRecordVo billRecordVo);
+
+    Result billStatistics(BillRecordVo billRecordVo);
 }
