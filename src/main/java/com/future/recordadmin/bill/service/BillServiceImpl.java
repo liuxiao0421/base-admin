@@ -43,7 +43,7 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
         billStatisticsReqVo.setIsEnd("0");
         billStatisticsReqVo.setConditionType(0);
         billStatisticsReqVo.setAbType(1);
-        billStatisticsReqVo.setDayNum(0);
+        billStatisticsReqVo.setDayNum(1);
         billStatisticsReqVo.setUserId(billRecordVo.getUserId());
         list = billStatistics(billStatisticsReqVo);
         TodayStatisticsVo todayStatisticsVo = new TodayStatisticsVo();
@@ -53,7 +53,7 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
         }else{
             BigDecimal bigDecimal = new BigDecimal("0.00");
             for(BillRecord billRecord: list){
-                bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
+                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
             }
             todayStatisticsVo.setCount(list.size());
             todayStatisticsVo.setAmount(bigDecimal.toString());
@@ -70,7 +70,7 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
         }else{
             BigDecimal bigDecimal = new BigDecimal("0.00");
             for(BillRecord billRecord: list){
-                bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
+                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
             }
             conditionStatisticsVo.setCount(list.size());
             conditionStatisticsVo.setAmount(bigDecimal.toString());
@@ -87,7 +87,7 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
         }else{
             BigDecimal bigDecimal = new BigDecimal("0.00");
             for(BillRecord billRecord: list){
-                bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
+                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
             }
             historyStatisticsVo.setCount(list.size());
             historyStatisticsVo.setAmount(bigDecimal.toString());
