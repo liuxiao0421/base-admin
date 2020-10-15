@@ -53,7 +53,7 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
         }else{
             BigDecimal bigDecimal = new BigDecimal("0.00");
             for(BillRecord billRecord: list){
-                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
+                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getReceivableAmt()));
             }
             todayStatisticsVo.setCount(list.size());
             todayStatisticsVo.setAmount(bigDecimal.toString());
@@ -70,7 +70,7 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
         }else{
             BigDecimal bigDecimal = new BigDecimal("0.00");
             for(BillRecord billRecord: list){
-                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
+                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getReceivableAmt()));
             }
             conditionStatisticsVo.setCount(list.size());
             conditionStatisticsVo.setAmount(bigDecimal.toString());
@@ -87,7 +87,7 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
         }else{
             BigDecimal bigDecimal = new BigDecimal("0.00");
             for(BillRecord billRecord: list){
-                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getNetReceiptsAmt()));
+                bigDecimal = bigDecimal.add(new BigDecimal(billRecord.getReceivableAmt()));
             }
             historyStatisticsVo.setCount(list.size());
             historyStatisticsVo.setAmount(bigDecimal.toString());

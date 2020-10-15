@@ -4,7 +4,7 @@
 server:
   port: 8888
   servlet:
-    context-path: /recordadmin #应用路径，配置应用路径，可方便进行反向代理
+    context-path: /manager #应用路径，配置应用路径，可方便进行反向代理
 #基础配置
 spring:
   profiles:
@@ -42,8 +42,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/record?serverTimezone=GMT%2B8&characterEncoding=utf-8
     username: root
-    password: wdsr1212
-#    password: wdsr@0421
+#    password: wdsr1212
+    password: wdsr@0421
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 #是否需要输入验证码
@@ -57,9 +57,11 @@ spring:
 
   #数据库配置
   datasource:
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&characterEncoding=utf-8
+#    url: jdbc:mysql://localhost:3306/record?serverTimezone=GMT%2B8&characterEncoding=utf-8
+    url: jdbc:mysql://49.232.163.151:3306/record?serverTimezone=GMT%2B8&characterEncoding=utf-8
     username: root
-    password: 123456
+#    password: wdsr1212
+    password: wdsr@0421
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 #是否需要输入验证码

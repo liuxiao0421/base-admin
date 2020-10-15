@@ -14,8 +14,8 @@ $.ajax({
     dataType : "json",        //返回数据形式为json
     success : function(result) {
         //请求成功时执行该函数内容，result即为服务器返回的json对象
-        console.log('amount:'+result.data.historyStatisticsVo.amount);
-        console.log('count:'+result.data.historyStatisticsVo.count);
+        // console.log('amount:'+result.data.historyStatisticsVo.amount);
+        // console.log('count:'+result.data.historyStatisticsVo.count);
         if (result) {
             let statisticsVo = result.data;
             names=['今天','近七天','历史'];
