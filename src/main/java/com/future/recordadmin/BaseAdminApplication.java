@@ -197,3 +197,11 @@ class IndexController {
         return new ModelAndView("logging.html","port",port);
     }
 }
+
+@Controller
+class StaticController{
+    @GetMapping("/billRecords")
+    public ModelAndView getBillRecords(){
+        return new ModelAndView("bill/billrecords");
+    }
+}

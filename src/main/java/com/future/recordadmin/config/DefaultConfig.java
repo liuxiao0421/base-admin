@@ -15,7 +15,7 @@ public class DefaultConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/fail").setViewName("fail");
-        registry.addViewController("/billRecords").setViewName("bill/billRecords");
+//        registry.addViewController("/billRecords").setViewName("bill/billRecords");
     }
 
 
