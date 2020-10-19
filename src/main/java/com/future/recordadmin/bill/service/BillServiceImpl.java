@@ -4,20 +4,25 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.future.recordadmin.bill.pojo.BillRecord;
 import com.future.recordadmin.bill.repository.BillRecordRepository;
 import com.future.recordadmin.bill.vo.*;
+import com.future.recordadmin.common.pojo.PageCondition;
+import com.future.recordadmin.common.pojo.PageInfo;
 import com.future.recordadmin.common.pojo.Result;
 import com.future.recordadmin.common.service.CommonServiceImpl;
+import com.future.recordadmin.util.CopyUtil;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -185,6 +190,61 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
         private String isEnd;
         //用户标识
         private String userId;
+    }
 
+    private Class<BillRecordVo> entityVoClass;//实体类Vo
+    public BillServiceImpl() {
+        Type[] types = ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments();
+        this.entityVoClass = (Class<BillRecordVo>) types[0];
+    }
+
+    @Override
+    public Result<PageInfo<BillRecordVo>> pageByCondition(BillRecordVo entityVo) {
+        Page<BillRecord> page = findPageByCondition(entityVo);
+        return Result.of(PageInfo.of(page, entityVoClass));
+    }
+
+    public Page<BillRecord> findPageByCondition(BillRecordVo billRecordVo) {
+        PageCondition pageCondition = billRecordVo;
+        return billRecordRepository.findAll(new Specification<BillRecord>() {
+            @Override
+            public Predicate toPredicate(Root<BillRecord> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+
+                /** 可添加你的其他搜索过滤条件 默认已有创建时间过滤 **/
+                Path<String> gmtCreateField=root.get("gmtCreate");
+
+                List<Predicate> list = new ArrayList<>();
+
+                /** 创建时间 **/
+                if(ObjectUtil.isNotEmpty(billRecordVo.getId())){
+                    list.add(cb.equal(root.get("id").as(String.class), billRecordVo.getId()));
+                }
+                if(ObjectUtil.isNotEmpty(billRecordVo.getIsEnd())){
+                    list.add(cb.equal(root.get("isEnd").as(String.class), billRecordVo.getIsEnd()));
+                }
+                if(ObjectUtil.isNotEmpty(billRecordVo.getUserId())){
+                    list.add(cb.equal(root.get("userId").as(String.class), billRecordVo.getUserId()));
+                }
+                if(ObjectUtil.isNotEmpty(billRecordVo.getPayer())){
+                    list.add(cb.equal(root.get("payer").as(String.class), billRecordVo.getPayer()));
+                }
+                String start;
+                String end;
+                if(ObjectUtil.isNotEmpty(billRecordVo.getGmtCreateBegin())||ObjectUtil.isNotEmpty(billRecordVo.getGmtCreateEnd())){
+                    start = billRecordVo.getGmtCreateBegin();
+                    end = billRecordVo.getGmtCreateEnd();
+                    if(StrUtil.isEmpty(start)){
+                        start = DateUtil.format(new Date(),"yyyyMMdd");
+                    }
+                    if(StrUtil.isEmpty(end)){
+                        end = DateUtil.format(new Date(),"yyyyMMdd");
+                    }
+                    list.add(cb.between(gmtCreateField.as(String.class), start,end));
+                }
+                Predicate[] arr = new Predicate[list.size()];
+                cq.where(list.toArray(arr));
+                return null;
+            }
+        }, pageCondition.getPageable());
     }
 }

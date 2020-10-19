@@ -22,8 +22,10 @@
                     <div class="layui-btn-container">
                         <button class="layui-btn layui-btn-sm" lay-event="addData">新增<i class="layui-icon layui-icon-add-1"></i></button>
                         <input type="text" id="payer" name="payer" autocomplete="off" placeholder="输入客户名称" class="layui-input layui-btn-sm">
-                        <input type="text" id="create" name="gmtCreate" autocomplete="off" placeholder="选择账单时间" class="layui-input layui-btn-sm">
-                        <input type="text" id="settleTime" name="settlementTime" autocomplete="off" placeholder="选择结算时间" class="layui-input layui-btn-sm">
+<!--                        <input type="text" id="create" name="gmtCreate" autocomplete="off" placeholder="选择账单时间" class="layui-input layui-btn-sm">-->
+                        <input type="text" id="gmtCreateBegin" name="gmtCreateBegin" autocomplete="off" placeholder="账单开始时间" class="layui-input layui-btn-sm">
+                        <input type="text" id="gmtCreateEnd" name="gmtCreateEnd" autocomplete="off" placeholder="账单结束时间" class="layui-input layui-btn-sm">
+<!--                        <input type="text" id="settleTime" name="settlementTime" autocomplete="off" placeholder="选择结算时间" class="layui-input layui-btn-sm">-->
                         <select lay-ignore name="isEnd" id="endResult" class="layui-input layui-btn-sm">
                             <option value="">选择是否结清</option>
                             <option value="0">未结清</option>
@@ -104,7 +106,7 @@
                         </div>
                     </div>
                     <!-- 隐藏域 -->
-                    <input type="text" name="userId" th:value="001" hidden="hidden"/>
+<!--                    <input type="text" name="userId" th:value="001" hidden="hidden"/>-->
                 </form>
                 <div class="layui-form-item">
                     <div class="layui-input-block">

@@ -6,6 +6,7 @@ import com.future.recordadmin.bill.pojo.BillRecord;
 import com.future.recordadmin.bill.service.BillService;
 import com.future.recordadmin.bill.vo.BillRecordVo;
 import com.future.recordadmin.common.controller.CommonController;
+import com.future.recordadmin.common.pojo.PageInfo;
 import com.future.recordadmin.common.pojo.Result;
 import com.future.recordadmin.config.interceptor.LoginHandlerInterceptor;
 import com.future.recordadmin.sys.sysuser.pojo.SysUser;
@@ -26,6 +27,13 @@ public class BillController extends CommonController<BillRecordVo, BillRecord, S
 //        billRecord.setUserId(userId);
 //        return billService.page(billRecord);
 //    }
+
+    @PostMapping("pageByCondition")
+    @Decrypt
+    @Encrypt
+    public Result<PageInfo<BillRecordVo>> pageByCondition(BillRecordVo entityVo) {
+        return billService.pageByCondition(entityVo);
+    }
 
     @GetMapping("getBillDetail")
     public Result getBillDetail(String billId){

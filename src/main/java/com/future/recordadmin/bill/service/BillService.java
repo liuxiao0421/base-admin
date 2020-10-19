@@ -2,6 +2,7 @@ package com.future.recordadmin.bill.service;
 
 import com.future.recordadmin.bill.pojo.BillRecord;
 import com.future.recordadmin.bill.vo.BillRecordVo;
+import com.future.recordadmin.common.pojo.PageInfo;
 import com.future.recordadmin.common.pojo.Result;
 import com.future.recordadmin.common.service.CommonService;
 import com.future.recordadmin.sys.sysmenu.pojo.SysMenu;
@@ -14,4 +15,6 @@ public interface BillService extends CommonService<BillRecordVo, BillRecord, Str
     Result conditionBillRecords(BillRecordVo billRecordVo);
 
     Result billStatistics(BillRecordVo billRecordVo);
+
+    Result<PageInfo<BillRecordVo>> pageByCondition(BillRecordVo entityVo);
 }

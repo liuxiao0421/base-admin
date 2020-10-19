@@ -28,4 +28,8 @@ public class BillRecordVo extends PageCondition implements Serializable {
     private String projectNature;
     /**结算时间*/
     private String settlementTime;
+
+    /**账单时间区间查询*/
+    private String gmtCreateBegin;
+    private String gmtCreateEnd;
 }

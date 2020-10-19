@@ -11,7 +11,8 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
     //用户列表
     tableIns = table.render({
         elem: '#billRecordsTable'
-        , url: ctx + '/bill/page'
+        // , url: ctx + '/bill/page'
+        , url: ctx + '/bill/pageByCondition'
         , method: 'POST'
         //请求前参数处理
         , request: {
@@ -65,8 +66,9 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
                 break;
             case 'query':
                 let payer = $("#payer").val()==""?null:$("#payer").val();
-                let gmtCreate = $('#create').val()==""?null:$('#create').val();
-                let settlementTime = $('#settleTime').val()==""?null:$('#settleTime').val();
+                let gmtCreateBegin = $('#gmtCreateBegin').val()==""?null:$('#gmtCreateBegin').val();
+                let gmtCreateEnd = $('#gmtCreateEnd').val()==""?null:$('#gmtCreateEnd').val();
+                // let settlementTime = $('#settleTime').val()==""?null:$('#settleTime').val();
                 let isEnd = $('#endResult').val()==""?null:$('#endResult').val();
                 let query = {
                     page: {
@@ -78,19 +80,19 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
                     }
                 };
                 //设定异步数据接口的额外参数
-                query.where = {payer: payer,gmtCreate: gmtCreate,settlementTime: settlementTime,isEnd: isEnd};
+                query.where = {payer: payer,gmtCreateBegin: gmtCreateBegin,gmtCreateEnd: gmtCreateEnd,isEnd: isEnd};
                 tableIns.reload(query);
                 laydate.render({
-                    elem: '#create',
+                    elem: '#gmtCreateBegin',
                     format: "yyyyMMdd"
                 });
                 laydate.render({
-                    elem: '#settleTime',
+                    elem: '#gmtCreateEnd',
                     format: "yyyyMMdd"
                 });
                 $("#payer").val(payer);
-                $('#create').val(gmtCreate);
-                $('#settleTime').val(settlementTime);
+                $('#gmtCreateBegin').val(gmtCreateBegin);
+                $('#gmtCreateEnd').val(gmtCreateEnd);
                 $('#endResult').val(isEnd);
                 break;
             case 'reload':
@@ -106,11 +108,11 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
                 //设定异步数据接口的额外参数
                 tableIns.reload(queryReload);
                 laydate.render({
-                    elem: '#create',
+                    elem: '#gmtCreateBegin',
                     format: "yyyyMMdd"
                 });
                 laydate.render({
-                    elem: '#settleTime',
+                    elem: '#gmtCreateEnd',
                     format: "yyyyMMdd"
                 });
                 break;
@@ -146,7 +148,7 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
         format: "yyyyMMdd"
     });
     laydate.render({
-        elem: '#create',
+        elem: '#gmtCreateBegin',
         format: "yyyyMMdd"
     });
     laydate.render({
@@ -154,7 +156,7 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
         format: "yyyyMMdd"
     });
     laydate.render({
-        elem: '#settleTime',
+        elem: '#gmtCreateEnd',
         format: "yyyyMMdd"
     });
 });
