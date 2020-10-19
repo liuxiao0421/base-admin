@@ -3,6 +3,7 @@ package com.future.recordadmin.common.pojo;
 import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * 分页条件（参考JqGrid插件）

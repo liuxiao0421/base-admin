@@ -16,7 +16,9 @@ import com.future.recordadmin.util.CopyUtil;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -206,6 +208,9 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
 
     public Page<BillRecord> findPageByCondition(BillRecordVo billRecordVo) {
         PageCondition pageCondition = billRecordVo;
+        Sort sort = new Sort(Sort.Direction.DESC, "gmtCreate");
+        Pageable pageable = PageRequest.of(pageCondition.getPage()-1, pageCondition.getRows(), sort);
+
         return billRecordRepository.findAll(new Specification<BillRecord>() {
             @Override
             public Predicate toPredicate(Root<BillRecord> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
@@ -245,6 +250,6 @@ public class BillServiceImpl extends CommonServiceImpl<BillRecordVo, BillRecord,
                 cq.where(list.toArray(arr));
                 return null;
             }
-        }, pageCondition.getPageable());
+        }, pageable);
     }
 }

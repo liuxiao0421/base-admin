@@ -1,10 +1,11 @@
 let tableIns;
 let tree;
+let laydate;
 layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], function () {
     let table = layui.table;
     let form = layui.form;//select、单选、复选等依赖form
     let element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-    let laydate = layui.laydate;
+    laydate = layui.laydate;
     tree = layui.tree;
     let height = document.documentElement.clientHeight - 160;
 
@@ -174,6 +175,18 @@ function billFormSave() {
         }
         layer.msg("保存成功", {icon: 1, time: 2000}, function () {});
         tableIns.reload();
+
+        layui.use(['laydate'],function () {
+            let laydate = layui.laydate;
+            laydate.render({
+                elem: '#gmtCreateBegin',
+                format: "yyyyMMdd"
+            });
+            laydate.render({
+                elem: '#gmtCreateEnd',
+                format: "yyyyMMdd"
+            });
+        });
     });
     $("#billForm")[0].reset();
 }
